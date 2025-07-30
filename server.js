@@ -18,7 +18,19 @@ mongoose.connect(process.env.MONGO_URI,
 
 app.get('/', (req,res)=>{
     res.send("Mongo is connected")
+    console.log("Mongo rocks")
+})
 
+app.post('/life', async(req,res)=>{
+    const { title } =req.body
+
+    try {
+        const todo =await Todo.create({title})
+        res.status(201).json(todo)
+    }
+    catch(err){
+        res.status(400).json({error:err.message})
+    }
 })
 
 mongoose.connection.once('open', async () => {
@@ -28,7 +40,6 @@ mongoose.connection.once('open', async () => {
     console.log(' Todo added.');
   }
 });
-
 
 
 const PORT= process.env.PORT||5000;
